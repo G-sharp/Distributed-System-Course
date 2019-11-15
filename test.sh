@@ -15,6 +15,6 @@ then
             go test -run FailNoAgree  
     fi
 else
-    go test -run Electiongit
+    go test -run Election
     go test -run FailNoAgree        
 fi
