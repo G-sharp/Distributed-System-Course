@@ -23,8 +23,6 @@ import "labrpc"
 // import "bytes"
 // import "encoding/gob"
 
-
-
 //
 // as each Raft peer becomes aware that successive log entries are
 // committed, the peer should send an ApplyMsg to the service (or
@@ -46,10 +44,13 @@ type Raft struct {
 	persister *Persister
 	me        int // index into peers[]
 
-	// Your data here.
-	// Look at the paper's Figure 2 for a description of what
-	// state a Raft server must maintain.
-
+	/* Your data here.
+	Look at the paper's Figure 2 for a description of what
+	state a Raft server must maintain.*/
+	currentTerm int //lateset term server has seen
+	votedFor    int
+	isLeader    bool
+	//log map
 }
 
 // return currentTerm and whether this server
@@ -59,6 +60,8 @@ func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isleader bool
 	// Your code here.
+	term = rf.currentTerm
+	isleader = rf.isLeader
 	return term, isleader
 }
 
@@ -90,20 +93,23 @@ func (rf *Raft) readPersist(data []byte) {
 	// d.Decode(&rf.yyy)
 }
 
-
-
-
 //
 // example RequestVote RPC arguments structure.
 //
 type RequestVoteArgs struct {
 	// Your data here.
+	term        int //candidate's term
+	candidateId int //candidate requesting vote
+	//lastLogIndex []map
+	//lastLogterm []Map
 }
 
 //
 // example RequestVote RPC reply structure.
 //
 type RequestVoteReply struct {
+	term        int  //currentTerm, for candidate to update itself
+	voteGranted bool //true means candidate received vote
 	// Your data here.
 }
 
@@ -136,7 +142,6 @@ func (rf *Raft) sendRequestVote(server int, args RequestVoteArgs, reply *Request
 	return ok
 }
 
-
 //
 // the service using Raft (e.g. a k/v server) wants to start
 // agreement on the next command to be appended to Raft's log. if this
@@ -154,7 +159,6 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	index := -1
 	term := -1
 	isLeader := true
-
 
 	return index, term, isLeader
 }
@@ -191,7 +195,6 @@ func Make(peers []*labrpc.ClientEnd, me int,
 
 	// initialize from state persisted before a crash
 	rf.readPersist(persister.ReadRaftState())
-
 
 	return rf
 }

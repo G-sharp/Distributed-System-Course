@@ -38,4 +38,19 @@ This is the resource repository for the course Distributed System in Fall 2019.
   chmod +x test_1.sh
   ./test_1.sh
   ```
+
+- ### Raft Server Outline
+  
+    - rf = Make(...)
+  create a new Raft server.
+    - rf.Start(command interface{}) (index, term, isleader)  
+    start agreement on a new log entry
+    - rf.GetState() (term, isLeader)
+    ask a Raft for its current term, and whether it thinks it is leader
+ ApplyMsg 
+ each time a new entry is committed to the log, each Raft peer
+   should send an ApplyMsg to the service (or tester)
+   in the same server.
+
+  
   
