@@ -17,8 +17,10 @@ package raft
 //   in the same server.
 //
 
-import "sync"
-import "labrpc"
+import (
+	"labrpc"
+	"sync"
+)
 
 // import "bytes"
 // import "encoding/gob"
@@ -53,7 +55,7 @@ type Raft struct {
 	//log map
 }
 
-// return currentTerm and whether this server
+// GetState return currentTerm and whether this server
 // believes it is the leader.
 func (rf *Raft) GetState() (int, bool) {
 
@@ -99,7 +101,7 @@ func (rf *Raft) readPersist(data []byte) {
 type RequestVoteArgs struct {
 	// Your data here.
 	term        int //candidate's term
-	candidateId int //candidate requesting vote
+	candidateID int //candidate requesting vote
 	//lastLogIndex []map
 	//lastLogterm []Map
 }
@@ -118,6 +120,7 @@ type RequestVoteReply struct {
 //
 func (rf *Raft) RequestVote(args RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here.
+
 }
 
 //
